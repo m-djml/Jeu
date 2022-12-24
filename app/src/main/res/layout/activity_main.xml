@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/grass">
+
+    <ImageView
+        android:id="@+id/bug"
+        android:layout_width="133dp"
+        android:layout_height="115dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+
+        android:layout_marginBottom="207dp"
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/aphid"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/gardener_rest"
+        app:layout_constraintEnd_toStartOf="@+id/aphid2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/bug2"
+        android:layout_width="133dp"
+        android:layout_height="115dp"
+        android:layout_marginStart="62dp"
+        android:layout_marginTop="16dp"
+
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="207dp"
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/aphid"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/gardener_rest"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/aphid"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/hit_right"
+        android:layout_width="193dp"
+        android:layout_height="266dp"
+        android:layout_marginTop="-220dp"
+        android:layout_marginEnd="4dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/hit_left"
+        app:layout_constraintTop_toBottomOf="@+id/gardener_rest"
+        tools:ignore="SpeakableTextPresentCheck,DuplicateClickableBoundsCheck" />
+
+    <Button
+        android:id="@+id/hit_left"
+        android:layout_width="193dp"
+        android:layout_height="266dp"
+        android:layout_marginTop="-220dp"
+        android:layout_marginEnd="-135dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/gardener_rest"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gardener_rest"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <ImageView
+        android:id="@+id/gardener_rest"
+        android:layout_width="262dp"
+        android:layout_height="377dp"
+        android:layout_marginStart="65dp"
+        android:layout_marginTop="376dp"
+        android:layout_marginEnd="66dp"
+        android:layout_marginBottom="54dp"
+        android:background="?android:attr/panelBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/gardener_rest" />
+
+
+    <ImageView
+        android:id="@+id/gardener_hit_left"
+        android:layout_width="262dp"
+        android:layout_height="377dp"
+        android:layout_marginStart="65dp"
+        android:layout_marginTop="376dp"
+        android:layout_marginEnd="66dp"
+        android:layout_marginBottom="54dp"
+        android:background="?android:attr/panelBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/gardener_hit_left" />
+
+    <ImageView
+        android:id="@+id/gardener_hit_right"
+        android:layout_width="262dp"
+        android:layout_height="377dp"
+        android:layout_marginStart="65dp"
+        android:layout_marginTop="376dp"
+        android:layout_marginEnd="66dp"
+        android:layout_marginBottom="54dp"
+        android:background="?android:attr/panelBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/gardener_hit_right" />
+
+    <ImageView
+        android:id="@+id/plant1"
+        android:layout_width="214dp"
+        android:layout_height="97dp"
+        android:layout_marginTop="-100dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/plant2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hit_right"
+        app:srcCompat="@drawable/plants" />
+
+    <ImageView
+        android:id="@+id/plant2"
+        android:layout_width="214dp"
+        android:layout_height="97dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="-100dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/plant1"
+        app:layout_constraintTop_toBottomOf="@+id/hit_right"
+        app:srcCompat="@drawable/plants" />
+
+    <TextView
+        android:id="@+id/excellent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:fontFamily="sans-serif-black"
+        android:text="@string/excellent"
+        android:textColor="@color/green"
+        android:textSize="34sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/gardener_rest"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/good"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:fontFamily="sans-serif-black"
+        android:text="@string/good"
+        android:textColor="@color/teal_200"
+        android:textSize="34sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/gardener_rest"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/miss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:fontFamily="sans-serif-black"
+        android:text="@string/miss"
+        android:textColor="@color/red"
+        android:textSize="34sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/gardener_rest"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="@string/score"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.008"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/score_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:background="@android:color/transparent"
+        android:text="@string/score_value"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/bug"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.026"
+        app:layout_constraintStart_toEndOf="@+id/score"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/life"
+        android:layout_width="37dp"
+        android:layout_height="18dp"
+        android:background="@android:color/transparent"
+        android:text="@string/life_value"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.99"
+        app:layout_constraintStart_toEndOf="@+id/score_value"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.001" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

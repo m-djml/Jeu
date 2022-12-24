@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Garden Defense</string>$
+    <string name="play">PLAY</string>
+    <string name="excellent">EXCELLENT</string>
+    <string name="good">GOOD</string>
+    <string name="miss">MISS</string>
+    <string name="score">SCORE : </string>
+    <string name="score_value">0</string>
+    <string name="life_value">10</string>
+</resources>
