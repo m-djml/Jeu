@@ -64,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
         // todo : l'application est super lente, trouver une solution
         // todo : ici : passer en asynchrone avec manip de thread ? oui ça marche
         // new BugMove (this, bugs_left, bugs_right, score_value).execute();
-        Handler handler = new Handler();
+
+        /* thread pour faire avancer les ennemies */
         Thread thread = new Thread() {
             @Override
             public void run() {
@@ -84,6 +85,87 @@ public class MainActivity extends AppCompatActivity {
         };
         thread.start();
 
+        /* thread pour évaluer les différents cas et calculer le score de la colonne de gauche */
+        Thread thread2 = new Thread() {
+            @Override
+            public void run() {
+                boolean isVisible = gard2.getVisibility() == View.VISIBLE;
+                while(true) {
+                    if (isVisible) {
+                        for (int i = 0; i < 5; i++) {
+                            float dist = getDist(bugs_left[i], gard2);
+                            Log.e("asd", "DISTANCE = " + dist);
+
+                            /* cas où l'insecte est frappé mais pas correctement */
+                            if (dist < 300 && dist > 200) {
+                                Log.e("asd", "GOOD");
+                                bugs_left[i].setVisibility(View.INVISIBLE);
+                                t2.setVisibility(View.VISIBLE);
+                                score_value += 5;
+                                score.setText(String.valueOf(score_value / 5)); // div par 5 car la boucle for est gênante et multiplie le résultat par 5
+                            }
+                            /* cas où l'insecte est frappé au bon moment */
+                            else if (dist < 200) {
+                                Log.e("asd", "EXCELLENT");
+                                bugs_left[i].setVisibility(View.INVISIBLE);
+                                t1.setVisibility(View.VISIBLE);
+                                score_value += 10;
+                                score.setText(String.valueOf(score_value / 5));
+                            }
+                            /* cas où on frappe à côté */
+                            else if (dist >= 300) {
+                                Log.e("asd", "MISS");
+                                // todo : bug : lorsqu'on rate pour la première fois
+                                t3.setVisibility(View.VISIBLE);              // si on rate on perd une vie
+                                life_value -= 1;
+                                life.setText(String.valueOf(life_value / 5));
+                                // todo : écrire la fonction de pénalité de temps lorsqu'on rate
+                            }
+                        }
+                    }
+                }
+            }
+        };
+        thread2.start();
+
+        /* thread pour évaluer les différents cas et calculer le score de la colonne de droite */
+        Thread thread3 = new Thread() {
+            @Override
+            public void run() {
+                while(true) {
+                    boolean isVisible = gard3.getVisibility() == View.VISIBLE;
+                    if (isVisible) {
+                        for (int i = 0; i < 5; i++) {
+                            float dist = getDist(gard3, bugs_right[i]);
+                            Log.e("asd", "DISTANCE = " + dist);
+                            if (dist < 300 && dist > 200) {
+                                Log.e("asd", "GOOD");
+
+                                bugs_right[i].setVisibility(View.INVISIBLE);
+                                t2.setVisibility(View.VISIBLE);
+                                score_value += 5;
+                                score.setText(String.valueOf(score_value / 5));
+                            } else if (dist < 200) {
+                                Log.e("asd", "EXCELLENT");
+
+                                bugs_right[i].setVisibility(View.INVISIBLE);
+                                t1.setVisibility(View.VISIBLE);
+                                score_value += 10;
+                                score.setText(String.valueOf(score_value / 5));
+                            } else if (dist >= 300) {
+                                Log.e("asd", "MISS");
+
+                                t3.setVisibility(View.VISIBLE);
+                                life_value -= 1;
+                                life.setText(String.valueOf(life_value / 5));
+                            }
+                        }
+                    }
+                }
+            }
+        };
+        thread3.start();
+
         // todo : bug : les insectes ne s'affichent pas
         // todo : implémenter le GameOverActivity lorsqu'on a perdu (vie <= 0)
 
@@ -95,42 +177,11 @@ public class MainActivity extends AppCompatActivity {
                     /* on passe d'une jardinière au repos à une jardinière qui frappe à gauche */
                     gard.setVisibility(View.INVISIBLE);
                     gard2.setVisibility(View.VISIBLE);
-
-                    /* boucle for pour traiter tous les insectes de gauche */
-                        float dist = getDist(bugs_left[0], gard2);
-                        Log.e("asd", "DISTANCE = "+dist);
-
-                        /* cas où l'insecte est frappé mais pas correctement */
-                        if (dist < 300 && dist > 200) {
-                            Log.e("asd", "GOOD");
-                            bugs_left[0].setVisibility(View.INVISIBLE);
-                            t2.setVisibility(View.VISIBLE);
-                            score_value+=5;
-                            score.setText(String.valueOf(score_value/5)); // div par 5 car la boucle for est gênante et multiplie le résultat par 5
-                        }
-                        /* cas où l'insecte est frappé au bon moment */
-                        else if (dist < 200) {
-                            Log.e("asd", "EXCELLENT");
-                            bugs_left[0].setVisibility(View.INVISIBLE);
-                            t1.setVisibility(View.VISIBLE);
-                            score_value+=10;
-                            score.setText(String.valueOf(score_value/5));
-                        }
-                        /* cas où on frappe à côté */
-                        else if (dist >= 300){
-                            Log.e("asd", "MISS");
-                            // todo : bug : lorsqu'on rate pour la première fois
-                            t3.setVisibility(View.VISIBLE);              // si on rate on perd une vie
-                            life_value-=1;
-                            life.setText(String.valueOf(life_value/5));
-                            // todo : écrire la fonction de pénalité de temps lorsqu'on rate
-                        }
                     break;
                 case MotionEvent.ACTION_UP:
                     /* la jardinière se met au repos */
                     gard2.setVisibility(View.INVISIBLE);
                     gard.setVisibility(View.VISIBLE);
-
                     /* les textes d'affichage redeviennent invisibles */
                     t1.setVisibility(View.INVISIBLE);
                     t2.setVisibility(View.INVISIBLE);
@@ -148,35 +199,7 @@ public class MainActivity extends AppCompatActivity {
                 case MotionEvent.ACTION_DOWN:
                     gard.setVisibility(View.INVISIBLE);
                     gard3.setVisibility(View.VISIBLE);
-                    for (int i = 0; i < 5; i++){
 
-                        float dist = getDist(gard3, bugs_right[i]);
-
-                        Log.e("asd", "DISTANCE = "+dist);
-
-                        if (dist < 300 && dist > 200) {
-                            Log.e("asd", "GOOD");
-
-                            bugs_right[i].setVisibility(View.INVISIBLE);
-                            t2.setVisibility(View.VISIBLE);
-                            score_value+=5;
-                            score.setText(String.valueOf(score_value/5));
-                        } else if (dist < 200) {
-                            Log.e("asd", "EXCELLENT");
-
-                            bugs_right[i].setVisibility(View.INVISIBLE);
-                            t1.setVisibility(View.VISIBLE);
-                            score_value+=10;
-                            score.setText(String.valueOf(score_value/5));
-                        }
-                        else if (dist >= 300){
-                            Log.e("asd", "MISS");
-
-                            t3.setVisibility(View.VISIBLE);
-                            life_value-=1;
-                            life.setText(String.valueOf(life_value/5));
-                        }
-                    }
                     break;
                 case MotionEvent.ACTION_UP:
                     gard3.setVisibility(View.INVISIBLE);
