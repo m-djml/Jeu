@@ -2,6 +2,7 @@ package com.example.jeu;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -17,18 +18,17 @@ public class MainActivity extends AppCompatActivity {
 
     /* variables privées de la classes */
     private ImageView gard, gard2, gard3;              // images du personnage
-    private TextView t1, t2, t3, score, life;                // textes d'affichage lors du jeu + score
+    private TextView t1, t2, t3, score, life;          // textes d'affichage lors du jeu + score
     private Button b1, b2;                             // boutons
     private ImageView[] bugs_right = new ImageView[5]; // ensemble des insectes à droite, il ne peut pas y a voir plus de 5 insectes
     private ImageView[] bugs_left = new ImageView[5];  // ensemble des insectes &agrave; gauche
     private int score_value = 0;                       // valeur du score sous forme d'entier pour faciliter les calculs et garder une sauvegarde du score courant
-    private int life_value = 10;                             // points de vie du joueur
+    private int life_value = 10;                       // points de vie du joueur
     TranslateAnimation animation;                      // instance d'une animation (valable pour toutes les images)
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
         /* on utilise les images et les textes créés dans activity_main.xml */
@@ -72,7 +72,11 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         /* on lance l'animation */
+
         bugs_right[0].startAnimation(animation);
+        Log.v("asd", "PREMIER PUCERON VIS = "+bugs_right[0].getVisibility());
+        Log.v("asd", "AAAAAAAAAAAAAAAA");
+
         bugs_left[0].startAnimation(animation);
         // todo : bug : les insectes ne s'affichent pas
 
