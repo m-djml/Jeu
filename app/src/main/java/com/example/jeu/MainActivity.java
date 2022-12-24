@@ -1,14 +1,12 @@
 package com.example.jeu;
 
-import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageView[] bugs_left = new ImageView[5];  // ensemble des insectes &agrave; gauche
     private int score_value = 0;                       // valeur du score sous forme d'entier pour faciliter les calculs et garder une sauvegarde du score courant
     private int life_value = 10;                       // points de vie du joueur
-    private ObjectAnimator[] animations = new ObjectAnimator[10];             // instance d'une animation (valable pour toutes les images)
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -58,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
             bugs_left[i].setVisibility(View.VISIBLE);
         }
 
-
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -66,22 +62,27 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         // todo : l'application est super lente, trouver une solution
-        // todo : ici : passer en asynchrone avec manip de thread ?
-        new BugMove (this).execute();
-
-        /* init des animations pour les insectes */
-        for (int i = 0; i < 5; i+=2) {
-            animations[i] = ObjectAnimator.ofFloat(bugs_left[i], "translationY", 1800f);
-            animations[i+1] = ObjectAnimator.ofFloat(bugs_right[i], "translationY", 1800f);
-        }
-
-        /* on lance l'animation */
-        for (int i = 0; i < 10; i+=2){
-            animations[i].start();      // animations pour la colonne de gauche
-            animations[i+1].start();    // animations pour la colonne de droite
-            animations[i].setDuration(8000+score_value/8);  // on augmente la vitesse
-            animations[i+1].setDuration(8000+score_value/8);
-        }
+        // todo : ici : passer en asynchrone avec manip de thread ? oui ça marche
+        // new BugMove (this, bugs_left, bugs_right, score_value).execute();
+        Handler handler = new Handler();
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while(true) {
+                        for (int i = 0; i < 5; i++){
+                            bugs_right[i].setY(bugs_right[i].getY()+10);
+                            bugs_left[i].setY(bugs_left[i].getY()+10);
+                            Log.d("asd", "I AM DOING MY ASYNC TASK");
+                            sleep(50);
+                        }
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        thread.start();
 
         // todo : bug : les insectes ne s'affichent pas
         // todo : implémenter le GameOverActivity lorsqu'on a perdu (vie <= 0)
