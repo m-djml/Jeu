@@ -51,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
         /* init des animations pour les insectes */
         // todo : reste à voir si on doit créer une seule animation pour tous les insectes ou une animation différente pour chaque insecte
-        animation = new TranslateAnimation(0.0f, 0.0f, 0.0f, 1800f);
-        animation.setRepeatCount(Animation.INFINITE);
+        animation = new TranslateAnimation(0.0f, 0.0f, 0.0f, 1500f);
+        animation.setRepeatCount(30);
         animation.setFillAfter(true);
         animation.setDuration(8000);
 
@@ -74,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
         /* on lance l'animation */
         bugs_right[0].startAnimation(animation);
         bugs_left[0].startAnimation(animation);
+        // todo : bug : les insectes ne s'affichent pas
+
+        // todo : implémenter le GameOverActivity lorsqu'on a perdu (vie <= 0)
 
         /* bouton de gauche */
         b1.setOnTouchListener((v, event) -> {
@@ -120,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
                     t1.setVisibility(View.INVISIBLE);
                     t2.setVisibility(View.INVISIBLE);
                     t3.setVisibility(View.INVISIBLE);
-                    //ojojjo
                     break;
                 default:
                     break;
