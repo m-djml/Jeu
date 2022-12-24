@@ -1,5 +1,6 @@
 package com.example.jeu;
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView[] bugs_left = new ImageView[5];  // ensemble des insectes &agrave; gauche
     private int score_value = 0;                       // valeur du score sous forme d'entier pour faciliter les calculs et garder une sauvegarde du score courant
     private int life_value = 10;                       // points de vie du joueur
-    TranslateAnimation animation;                      // instance d'une animation (valable pour toutes les images)
+    private ObjectAnimator[] animations = new ObjectAnimator[10];             // instance d'une animation (valable pour toutes les images)
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -49,35 +50,42 @@ public class MainActivity extends AppCompatActivity {
         score = (TextView) findViewById(R.id.score_value);
         life = (TextView) findViewById(R.id.life);
 
-        /* init des animations pour les insectes */
-        // todo : reste à voir si on doit créer une seule animation pour tous les insectes ou une animation différente pour chaque insecte
-        animation = new TranslateAnimation(0.0f, 0.0f, 0.0f, 1800f);
-        animation.setRepeatCount(30);
-        animation.setFillAfter(true);
-        animation.setDuration(8000);
-
         /* init des images des insectes */
         for (int i = 0; i < 5; i++) {
             bugs_right[i] = findViewById(R.id.bug);
             bugs_right[i].setVisibility(View.VISIBLE);
             bugs_left[i] = findViewById(R.id.bug2);
             bugs_left[i].setVisibility(View.VISIBLE);
-            System.out.println("BUGS "+i+" CREATED");       // pour le débug
         }
+
+
     }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onStart() {
         super.onStart();
+        // todo : l'application est super lente, trouver une solution
+        // todo : ici : passer en asynchrone avec manip de thread ?
+        new BugMove (this).execute();
+
+        /* init des animations pour les insectes */
+        for (int i = 0; i < 5; i+=2) {
+            animations[i] = ObjectAnimator.ofFloat(bugs_left[i], "translationY", 1800f);
+            animations[i+1] = ObjectAnimator.ofFloat(bugs_right[i], "translationY", 1800f);
+        }
 
         /* on lance l'animation */
+        for (int i = 0; i < 10; i+=2){
+            animations[i].start();      // animations pour la colonne de gauche
+            animations[i+1].start();    // animations pour la colonne de droite
+            animations[i].setDuration(8000+score_value/8);  // on augmente la vitesse
+            animations[i+1].setDuration(8000+score_value/8);
+        }
 
-        bugs_right[0].startAnimation(animation);
-        bugs_left[0].startAnimation(animation);
         // todo : bug : les insectes ne s'affichent pas
-
         // todo : implémenter le GameOverActivity lorsqu'on a perdu (vie <= 0)
+
 
         /* bouton de gauche */
         b1.setOnTouchListener((v, event) -> {
@@ -88,32 +96,34 @@ public class MainActivity extends AppCompatActivity {
                     gard2.setVisibility(View.VISIBLE);
 
                     /* boucle for pour traiter tous les insectes de gauche */
-                    for (int i = 0; i < 5; i++){                          // on veut calculer la distance avec chaque insecte
-                        float dist = getDist(gard2, bugs_left[i]);
+                        float dist = getDist(bugs_left[0], gard2);
+                        Log.e("asd", "DISTANCE = "+dist);
 
                         /* cas où l'insecte est frappé mais pas correctement */
                         if (dist < 300 && dist > 200) {
-                            bugs_left[i].setVisibility(View.INVISIBLE);
+                            Log.e("asd", "GOOD");
+                            bugs_left[0].setVisibility(View.INVISIBLE);
                             t2.setVisibility(View.VISIBLE);
                             score_value+=5;
                             score.setText(String.valueOf(score_value/5)); // div par 5 car la boucle for est gênante et multiplie le résultat par 5
                         }
                         /* cas où l'insecte est frappé au bon moment */
                         else if (dist < 200) {
-                            bugs_left[i].setVisibility(View.INVISIBLE);
+                            Log.e("asd", "EXCELLENT");
+                            bugs_left[0].setVisibility(View.INVISIBLE);
                             t1.setVisibility(View.VISIBLE);
                             score_value+=10;
                             score.setText(String.valueOf(score_value/5));
                         }
                         /* cas où on frappe à côté */
                         else if (dist >= 300){
+                            Log.e("asd", "MISS");
                             // todo : bug : lorsqu'on rate pour la première fois
                             t3.setVisibility(View.VISIBLE);              // si on rate on perd une vie
                             life_value-=1;
                             life.setText(String.valueOf(life_value/5));
                             // todo : écrire la fonction de pénalité de temps lorsqu'on rate
                         }
-                    }
                     break;
                 case MotionEvent.ACTION_UP:
                     /* la jardinière se met au repos */
@@ -138,24 +148,29 @@ public class MainActivity extends AppCompatActivity {
                     gard.setVisibility(View.INVISIBLE);
                     gard3.setVisibility(View.VISIBLE);
                     for (int i = 0; i < 5; i++){
-                        t1.setVisibility(View.INVISIBLE);
-                        t2.setVisibility(View.INVISIBLE);
-                        t3.setVisibility(View.INVISIBLE);
 
-                        float dist = getDist(gard2, bugs_right[i]);
+                        float dist = getDist(gard3, bugs_right[i]);
+
+                        Log.e("asd", "DISTANCE = "+dist);
 
                         if (dist < 300 && dist > 200) {
+                            Log.e("asd", "GOOD");
+
                             bugs_right[i].setVisibility(View.INVISIBLE);
                             t2.setVisibility(View.VISIBLE);
                             score_value+=5;
                             score.setText(String.valueOf(score_value/5));
                         } else if (dist < 200) {
+                            Log.e("asd", "EXCELLENT");
+
                             bugs_right[i].setVisibility(View.INVISIBLE);
                             t1.setVisibility(View.VISIBLE);
                             score_value+=10;
                             score.setText(String.valueOf(score_value/5));
                         }
                         else if (dist >= 300){
+                            Log.e("asd", "MISS");
+
                             t3.setVisibility(View.VISIBLE);
                             life_value-=1;
                             life.setText(String.valueOf(life_value/5));
