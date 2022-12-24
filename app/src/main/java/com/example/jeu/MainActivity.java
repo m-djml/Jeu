@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         /* init des animations pour les insectes */
         // todo : reste à voir si on doit créer une seule animation pour tous les insectes ou une animation différente pour chaque insecte
-        animation = new TranslateAnimation(0.0f, 0.0f, 0.0f, 1500f);
+        animation = new TranslateAnimation(0.0f, 0.0f, 0.0f, 1800f);
         animation.setRepeatCount(30);
         animation.setFillAfter(true);
         animation.setDuration(8000);
@@ -74,9 +74,6 @@ public class MainActivity extends AppCompatActivity {
         /* on lance l'animation */
 
         bugs_right[0].startAnimation(animation);
-        Log.v("asd", "PREMIER PUCERON VIS = "+bugs_right[0].getVisibility());
-        Log.v("asd", "AAAAAAAAAAAAAAAA");
-
         bugs_left[0].startAnimation(animation);
         // todo : bug : les insectes ne s'affichent pas
 
@@ -109,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                             score.setText(String.valueOf(score_value/5));
                         }
                         /* cas où on frappe à côté */
-                        else {
+                        else if (dist >= 300){
                             // todo : bug : lorsqu'on rate pour la première fois
                             t3.setVisibility(View.VISIBLE);              // si on rate on perd une vie
                             life_value-=1;
@@ -158,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                             score_value+=10;
                             score.setText(String.valueOf(score_value/5));
                         }
-                        else {
+                        else if (dist >= 300){
                             t3.setVisibility(View.VISIBLE);
                             life_value-=1;
                             life.setText(String.valueOf(life_value/5));
