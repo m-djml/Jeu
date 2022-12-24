@@ -120,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
                     t1.setVisibility(View.INVISIBLE);
                     t2.setVisibility(View.INVISIBLE);
                     t3.setVisibility(View.INVISIBLE);
+                    //ojojjo
                     break;
                 default:
                     break;
