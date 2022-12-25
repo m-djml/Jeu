@@ -129,13 +129,11 @@ public class MainActivity extends AppCompatActivity {
                                 runOnUiThread(() -> life.setText(String.valueOf(life_value)));
                                 // todo : écrire la fonction de pénalité de temps lorsqu'on rate
                             }
-                        } /*else {
-                            runOnUiThread(() -> {
-                                t1.setVisibility(View.INVISIBLE);
-                                t2.setVisibility(View.INVISIBLE);
-                                t3.setVisibility(View.INVISIBLE);
-                            });
-                        }*/
+                        }
+                        runOnUiThread(() -> t1.setVisibility(View.INVISIBLE));
+                        runOnUiThread(() -> t2.setVisibility(View.INVISIBLE));
+                        runOnUiThread(() -> t3.setVisibility(View.INVISIBLE));
+
                         boolean isAttacking = getDist(bugs_right[i], plant1) < 10;
                         if (isAttacking) {
                             life_value--;
@@ -176,13 +174,10 @@ public class MainActivity extends AppCompatActivity {
                                 life_value -= 1;
                                 runOnUiThread(() -> life.setText(String.valueOf(life_value)));
                             }
-                        } /*else {
-                            runOnUiThread(() -> {
-                                t1.setVisibility(View.INVISIBLE);
-                                t2.setVisibility(View.INVISIBLE);
-                                t3.setVisibility(View.INVISIBLE);
-                            });
-                        }*/
+                        }
+                        runOnUiThread(() -> t1.setVisibility(View.INVISIBLE));
+                        runOnUiThread(() -> t2.setVisibility(View.INVISIBLE));
+                        runOnUiThread(() -> t3.setVisibility(View.INVISIBLE));
                         boolean isAttacking = getDist(bugs_right[i], plant2) < 10;
                         if (isAttacking) {
                             life_value--;
@@ -221,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
                 b2isPressed = true;
                 gard.setVisibility(View.INVISIBLE);
                 gard3.setVisibility(View.VISIBLE);
-                return false;
+                return true;
             } else if (action == MotionEvent.ACTION_UP) {
                 b2isPressed = false;
                 gard3.setVisibility(View.INVISIBLE);
