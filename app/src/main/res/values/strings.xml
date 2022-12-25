@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Garden Defense</string>$
     <string name="play">PLAY</string>
+    <string name="cont">CONTINUE</string>
     <string name="excellent">EXCELLENT</string>
     <string name="good">GOOD</string>
     <string name="miss">MISS</string>
